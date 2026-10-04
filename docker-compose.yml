@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: habit_tracker
+      POSTGRES_PASSWORD: habit_tracker
+      POSTGRES_DB: habit_tracker
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U habit_tracker -d habit_tracker"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      DATABASE_URL: postgresql+psycopg://habit_tracker:habit_tracker@db:5432/habit_tracker
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/src:/app/src
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db-data:
