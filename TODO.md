@@ -37,7 +37,7 @@ docsと差異がある場合、実装ではここの決定を優先する。
 
 ## Phase 1: Status Enum・日付ロジック（Backend Unit）
 
-- [ ] [Unit] `Status` Enum が `SUCCESS=1`, `PARTIAL=2`, `FAILURE=3` を持つ
+- [x] [Unit] `Status` Enum が `SUCCESS=1`, `PARTIAL=2`, `FAILURE=3` を持つ
 - [ ] [Unit] 対象年月の日数を返す（31日月 / 30日月）
 - [ ] [Unit] 2月の日数を返す（平年28日 / うるう年29日 / 100年・400年ルール）
 - [ ] [Unit] 対象年月の初日・末日（記録検索の範囲）を返す
