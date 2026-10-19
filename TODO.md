@@ -44,7 +44,7 @@ docsと差異がある場合、実装ではここの決定を優先する。
 
 ## Phase 2: DBモデル・マイグレーション
 
-- [ ] [Integration] Alembic 初期マイグレーションで `goals` / `habit_records` が作成される（`alembic upgrade head` がテストDBで通る）
+- [x] [Integration] Alembic 初期マイグレーションで `goals` / `habit_records` が作成される（`alembic upgrade head` がテストDBで通る）
 - [ ] [Integration] `goals` は `lower(name)` のUNIQUE INDEXにより大文字・小文字違いの同名を拒否する
 - [ ] [Integration] `habit_records` は `(goal_id, record_date)` のUNIQUE制約で同一日の2件目を拒否する
 - [ ] [Integration] `habit_records.status` は `CHECK(status IN (1,2,3))` で範囲外を拒否する
