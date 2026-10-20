@@ -1,7 +1,10 @@
 import os
 from collections.abc import Iterator
+from pathlib import Path
 
 import pytest
+from alembic import command
+from alembic.config import Config
 from fastapi.testclient import TestClient
 from sqlalchemy.engine import make_url
 from sqlalchemy.orm import Session
@@ -24,6 +27,14 @@ if make_url(settings.database_url).database != TEST_DATABASE_NAME:
         f"DATABASE_URL must point to '{TEST_DATABASE_NAME}': {settings.database_url}",
         returncode=1,
     )
+
+ALEMBIC_INI = Path(__file__).resolve().parents[1] / "alembic.ini"
+
+
+@pytest.fixture(scope="session", autouse=True)
+def migrate_test_database() -> None:
+    # テストDBのスキーマを常に最新のマイグレーションに揃えてから開始する
+    command.upgrade(Config(ALEMBIC_INI), "head")
 
 
 @pytest.fixture

@@ -8,13 +8,6 @@
 - 仕様の未定義は先に確定させる
   - 確定事項はTODO.mdに記録
 
-## Setupタスクの完了条件
-- テストの代わりに観察できる結果で判断
-  - コンテナがhealthyになる
-  - 必要なDBが存在する
-  - 作り直してもデータが残る
-- 確認できるまで完了にしない
-
 ## Docker ComposeのPostgreSQL
 - named volumeでデータを保持
   - `down` では消えない
@@ -88,6 +81,7 @@
 - たとえ: Session = 銀行の窓口担当、トランザクション = 1枚の伝票
 - テストでは外側にもう1つトランザクションを張る
   - Sessionのcommitは内側（SAVEPOINT）の確定だけ
+  - SessionがSAVEPOINTをつくってロールバックでそこまで戻る
   - 最後に外側ごと取り消す
 
 ## pytestの土台（conftest.py）
@@ -104,6 +98,7 @@
   - 終了時にROLLBACKして変更が全部消える
   - テーブル作り直しより速く、消し忘れもない
 - `client`: HTTPでアプリを呼ぶ
+  - HTTP通信で本物のDBを使ってしまう
   - `dependency_overrides`で`get_db`を`db_session`に差し替え
   - 本番コードを変えずに接続方法だけ入れ替える
   - `TestClient`はサーバーを起動せずにリクエストできる

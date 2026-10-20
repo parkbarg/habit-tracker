@@ -1,14 +1,20 @@
 - [x] [Integration] Alembic 初期マイグレーションで `goals` / `habit_records` が作成される（`alembic upgrade head` がテストDBで通る）
-- test_codeでalchemyを入れたがファルダをonedriveからwslのhomeに移動させたらuvが見ている仮想環境の設定がおかしかった
-  - 対策：.venvを削除
-  - uv sync
-- pythonコードは二通りのdbを作る方法がある
-  - connection.executeを行う。
-  - SQLAlchemyでクラスを定義しておこなう
-    - dbを変更しても自動更新しない
-    - ここでAlembicが必要となる
-    - upgrade downgradeができる
-- 今回はテスト用DBもあるのでpytest中でも開発DBにmigrationしてしまう恐れがあるためinitで入れていない。
-- 特殊記号となるためエスケープした
-- pytestはグループを作ることができる
-- なぜdbを二つ作るのか
+  - test_codeでalchemyを入れたがファルダをonedriveからwslのhomeに移動させたらuvが見ている仮想環境の設定がおかしかった
+    - 対策：.venvを削除
+    - uv sync
+  - pythonコードは二通りのdbを作る方法がある
+    - connection.executeを行う。
+    - SQLAlchemyでクラスを定義しておこなう
+      - dbを変更しても自動更新しない
+      - ここでAlembicが必要となる
+      - upgrade downgradeができる
+  - 今回はテスト用DBもあるのでpytest中でも開発DBにmigrationしてしまう恐れがあるためinitで入れていない。
+  - 特殊記号となるためエスケープした
+  - pytestはグループを作ることができる
+  - なぜdbを二つ作るのか
+    - 開発DBを壊す可能性があるため、Alembicのmigrationテストを行うからである。
+- [x] [Integration] `goals` は `lower(name)` のUNIQUE INDEXにより大文字・小文字違いの同名を拒否する
+  - func.lower("name")で小文字にできるがname文字列をそのままlowerにしたいと認識している
+  - text("lower(name)")と直接指定した
+    - DBがまだ定義されていないのでそのあとならできる
+  - マイグレーションは自分で書く必要があるときがある。
