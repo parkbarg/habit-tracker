@@ -2,6 +2,7 @@ from datetime import date, datetime
 
 from sqlalchemy import (
     BigInteger,
+    CheckConstraint,
     Date,
     DateTime,
     ForeignKey,
@@ -11,7 +12,11 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Mapped, mapped_column
 
+from backend.core.enums import Status
 from backend.db.base import Base
+
+# Status Enumの値だけを許可する（例: "status IN (1, 2, 3)"）
+STATUS_CHECK_SQL = f"status IN ({', '.join(str(s.value) for s in Status)})"
 
 
 class HabitRecord(Base):
@@ -21,6 +26,7 @@ class HabitRecord(Base):
         UniqueConstraint(
             "goal_id", "record_date", name="uq_habit_records_goal_id_record_date"
         ),
+        CheckConstraint(STATUS_CHECK_SQL, name="ck_habit_records_status"),
     )
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)

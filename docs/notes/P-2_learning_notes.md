@@ -26,3 +26,9 @@
   - テスト番号順にした方が分かりやすいのではないか
   - フォーマッターいるのかな
     - claudeも自分も書いていたらいるかもな
+- [x] [Integration] `habit_records.status` は `CHECK(status IN (1,2,3))` で範囲外を拒否する
+  - AlembicのCHECK制約は自動追加変更をできない
+  - Enumから生成すると過去のマイグレーションが変わってしまうので手書きで入れる
+  - Enumはコードで扱うための変換的なもの
+  - @pytest.mark.parametrize("invalid_status", [0, 4])
+    - これを使うことによって0の場合と4の場合の二つ通り書くことを防げる
