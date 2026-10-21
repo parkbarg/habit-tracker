@@ -32,3 +32,7 @@
   - Enumはコードで扱うための変換的なもの
   - @pytest.mark.parametrize("invalid_status", [0, 4])
     - これを使うことによって0の場合と4の場合の二つ通り書くことを防げる
+- [x] [Integration] `goals` を削除すると `ON DELETE CASCADE` で `habit_records` も削除される
+  - ORM のカスケードと DB のカスケードは別物です。 SQLAlchemy の relationship(cascade=...) は、ORM を通した削除にしか効きません。仕様が求めているのは DB 制約なので、テストでは ORM を通らない SQL の DELETE 文で削除しています。こうすることで、DB 制約そのものを確かめられます。
+  - assertは結果の値を確かめる
+  - raiseは例外

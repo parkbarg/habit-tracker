@@ -30,7 +30,9 @@ class HabitRecord(Base):
     )
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
-    goal_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("goals.id"))
+    goal_id: Mapped[int] = mapped_column(
+        BigInteger, ForeignKey("goals.id", ondelete="CASCADE")
+    )
     record_date: Mapped[date] = mapped_column(Date)
     # 値は core.enums.Status（1=SUCCESS, 2=PARTIAL, 3=FAILURE）
     status: Mapped[int] = mapped_column(SmallInteger)
