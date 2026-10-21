@@ -1,6 +1,14 @@
 from datetime import date, datetime
 
-from sqlalchemy import BigInteger, Date, DateTime, ForeignKey, SmallInteger, func
+from sqlalchemy import (
+    BigInteger,
+    Date,
+    DateTime,
+    ForeignKey,
+    SmallInteger,
+    UniqueConstraint,
+    func,
+)
 from sqlalchemy.orm import Mapped, mapped_column
 
 from backend.db.base import Base
@@ -8,6 +16,12 @@ from backend.db.base import Base
 
 class HabitRecord(Base):
     __tablename__ = "habit_records"
+    # 1目標・1日につき1記録だけにする
+    __table_args__ = (
+        UniqueConstraint(
+            "goal_id", "record_date", name="uq_habit_records_goal_id_record_date"
+        ),
+    )
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     goal_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("goals.id"))

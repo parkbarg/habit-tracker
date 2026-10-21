@@ -18,3 +18,11 @@
   - text("lower(name)")と直接指定した
     - DBがまだ定義されていないのでそのあとならできる
   - マイグレーションは自分で書く必要があるときがある。
+- [x] [Integration] `habit_records` は `(goal_id, record_date)` のUNIQUE制約で同一日の2件目を拒否する
+  - 制約に名前をつけないとPostgreSQLが自動で名前を付ける
+  - UNIQUE INDEXとUNIQUE制約は違う
+  - healthcheck:test: ["CMD-SHELL", "pg_isready -U habit_tracker -d habit_tracker"]で起動の確認
+  - docker compose up -d --wait dbでも行える
+  - テスト番号順にした方が分かりやすいのではないか
+  - フォーマッターいるのかな
+    - claudeも自分も書いていたらいるかもな
